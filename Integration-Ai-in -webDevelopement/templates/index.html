@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getwow education</title>
+  <style>
+    textarea {
+      resize: both;
+      min-height: 100px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body class="">
+  <h1>Getwow education</h1>
+  <div>
+    <div>
+      <label for="plan">Select Plan:</label>
+      <select id="plan" name="plan">
+        <option value="study">Study Plan</option>
+        <option value="teaching">Lesson Plan</option>
+      </select>
+    </div>
+    <br>
+    <div>
+      <label for="grade">Select Grade:</label>
+      <input list="grades" id="grade" name="grade">
+      <datalist id="grades">
+        <option value="1">
+        <option value="2">
+        <option value="3">
+        <option value="4">
+        <option value="5">
+        <option value="6">
+        <option value="7">
+        <option value="8">
+        <option value="9">
+        <option value="10">
+      </datalist>
+    </div>
+  </div>
+  <br>
+  <div>
+    <div>
+      <label for="role">Select Role:</label>
+      <input list="roles" id="role" name="role">
+      <datalist id="roles">
+        <option value="Teacher">
+        <option value="Student">
+      </datalist>
+    </div>
+    <br>
+    <div>
+      <label for="topic">Enter Topic:</label>
+      <input type="text" id="topic" name="topic">
+    </div>
+  </div>
+  <br>
+  <div>
+    <div>
+      <label for="date">Select Date:</label>
+      <input type="date" id="date" name="date">
+    </div>
+    <br>
+    <div>
+      <label for="start-time">Select Start Time:</label>
+      <input type="time" id="start-time" name="start-time">
+    </div>
+    <br>
+    <div>
+      <label for="end-time">Select End Time:</label>
+      <input type="time" id="end-time" name="end-time">
+    </div>
+    <br>
+  </div>
+  <div>
+    <label for="duration">Select Duration:</label>
+    <select id="duration" name="duration">
+      <option value="1 day">1 day</option>
+      <option value="2 days">2 days</option>
+      <option value="3 days">3 days</option>
+      <option value="4 days">4 days</option>
+      <option value="5 days">5 days</option>
+      <option value="6 days">6 days</option>
+      <option value="7 days">7 days</option>
+      <option value="8 days">8 days</option>
+      <option value="9 days">9 days</option>
+      <option value="10 days">10 days</option>
+      <option value="11 days">11 days</option>
+      <option value="12 days">12 days</option>
+      <option value="13 days">13 days</option>
+      <option value="14 days">14 days</option>
+      <option value="15 days">15 days</option>
+      <option value="16 days">16 days</option>
+      <option value="17 days">17 days</option>
+      <option value="18 days">18 days</option>
+      <option value="19 days">19 days</option>
+      <option value="20 days">20 days</option>
+      <option value="21 days">21 days</option>
+      <option value="22 days">22 days</option>
+      <option value="23 days">23 days</option>
+      <option value="24 days">24 days</option>
+      <option value="25 days">25 days</option>
+      <option value="26 days">26 days</option>
+      <option value="27 days">27 days</option>
+      <option value="28 days">28 days</option>
+      <option value="29 days">29 days</option>
+      <option value="30 days">30 days</option>
+    </select>
+  </div>
+
+  <br>
+
+  <br>
+
+  <button onclick="sendPrompt()">Submit</button>
+
+  <br><br>
+
+  <label for="response">Response:</label>
+  <br>
+  <textarea id="response" rows="3" readonly placeholder="Please wait! Response may take upto 15 to 30 seconds"></textarea>
+
+  <script>
+    function sendPrompt() {
+      const plan = document.getElementById('plan').value;
+      const grade = document.getElementById('grade').value;
+      const role = document.getElementById('role').value;
+      const topic = document.getElementById('topic').value;
+      const date = document.getElementById('date').value;
+      const start_time = document.getElementById('start-time').value;
+      const end_time = document.getElementById('end-time').value;
+      const duration = document.getElementById('duration').value;
+
+      const prompt = `${plan.charAt(0).toUpperCase() + plan.slice(1)} for Grade ${grade} ${role} on ${topic} on ${date}, ${start_time} to ${end_time} for ${duration}.`;
+
+      fetch('/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ plan, grade, role, topic, date, 'start-time': start_time, 'end-time': end_time, duration }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          const responseTextarea = document.getElementById('response');
+          responseTextarea.value = data.response;
+          responseTextarea.rows = data.response ? data.response.split('\n').length : 1;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  </script>
+</body>
+
+</html>
